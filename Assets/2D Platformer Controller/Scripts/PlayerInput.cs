@@ -3,9 +3,8 @@
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour
 {
-    private Player player;
-	private Crosshair crosshair;
-
+    
+	public PLAYERS currentPlayer;
 	public enum PLAYERS{
 		Player1,
 		Player2,
@@ -13,12 +12,16 @@ public class PlayerInput : MonoBehaviour
 		Player4
 	}
 
-	public PLAYERS playerNumber;
+	private Player player;
+	private Crosshair crosshair;
+	private int playerNumber;
+	private bool isTriggerDown;
 
     private void Start()
     {
-		int number = (int)playerNumber + 1;
-		crosshair = GameObject.Find ("Crosshair_" + number).GetComponent<Crosshair>();
+		isTriggerDown = false;
+		playerNumber = (int)currentPlayer + 1;
+		crosshair = GameObject.Find ("Crosshair_" + playerNumber).GetComponent<Crosshair>();
         player = GetComponent<Player>();
     }
 
@@ -28,10 +31,10 @@ public class PlayerInput : MonoBehaviour
     }
 
 	void playerControls() {
-		int number = (int)playerNumber + 1;
-		jumpAction ("Jump_" + number);
-		directionalMovement ("Horizontal_L_" + number);
-		crosshairMovement ("Horizontal_R_" + number,"Vertical_R_"+number);
+		jumpAction ("Jump_" + playerNumber);
+		directionalMovement ("Horizontal_L_" + playerNumber);
+		crosshairMovement ("Horizontal_R_" + playerNumber,"Vertical_R_"+playerNumber);
+		shootingTrigger("Fire_"+playerNumber);
 	}
 
 	void directionalMovement(string horizontal) {
@@ -50,6 +53,21 @@ public class PlayerInput : MonoBehaviour
 		{
 			player.OnJumpInputUp();
 		}
+	}
+
+	void shootingTrigger(string action){
+		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
+			//TODO - Shoot button
+			//crosshair.shoot();
+			Debug.Log (Input.GetAxis (action));
+			isTriggerDown = true;
+		}
+
+		if (Input.GetAxis (action) <= 0) {
+			isTriggerDown = false;
+		}
+
+
 	}
 
 	void crosshairMovement(string horizontal, string vertical) {
