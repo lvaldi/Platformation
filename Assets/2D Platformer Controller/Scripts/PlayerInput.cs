@@ -4,6 +4,8 @@
 public class PlayerInput : MonoBehaviour
 {
     private Player player;
+	private Crosshair crosshair;
+
 	public enum PLAYERS{
 		Player1,
 		Player2,
@@ -15,6 +17,8 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
+		int number = (int)playerNumber + 1;
+		crosshair = GameObject.Find ("Crosshair_" + number).GetComponent<Crosshair>();
         player = GetComponent<Player>();
     }
 
@@ -26,7 +30,8 @@ public class PlayerInput : MonoBehaviour
 	void playerControls() {
 		int number = (int)playerNumber + 1;
 		jumpAction ("Jump_" + number);
-		directionalMovement ("Horizontal_" + number);
+		directionalMovement ("Horizontal_L_" + number);
+		crosshairMovement ("Horizontal_R_" + number,"Vertical_R_"+number);
 	}
 
 	void directionalMovement(string horizontal) {
@@ -45,5 +50,10 @@ public class PlayerInput : MonoBehaviour
 		{
 			player.OnJumpInputUp();
 		}
+	}
+
+	void crosshairMovement(string horizontal, string vertical) {
+		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+		crosshair.moveCrossHair (directionalInput);
 	}
 }
