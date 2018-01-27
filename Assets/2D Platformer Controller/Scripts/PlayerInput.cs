@@ -35,7 +35,7 @@ public class PlayerInput : MonoBehaviour
 	}
 
 	void directionalMovement(string horizontal) {
-		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw("Vertical"));
+		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), 0);
 		player.SetDirectionalInput(directionalInput);
 	}
 
