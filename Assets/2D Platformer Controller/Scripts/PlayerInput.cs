@@ -20,22 +20,22 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        player.SetDirectionalInput(directionalInput);
-
-		switch (playerNumber) {
-		case PLAYERS.Player1:
-			jumpControl ("Jump");
-			break;
-		case PLAYERS.Player2:
-			jumpControl ("Jump_1");
-			break;
-
-		}
-
+		playerControls ();
     }
 
-	private void jumpControl(string action) {
+	void playerControls() {
+		int number = (int)playerNumber + 1;
+		jumpAction ("Jump_" + number);
+		directionalMovement ("Horizontal_" + number);
+	}
+
+	void directionalMovement(string horizontal) {
+		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw("Vertical"));
+		player.SetDirectionalInput(directionalInput);
+	}
+
+
+	void jumpAction(string action) {
 		if (Input.GetButtonDown(action))
 		{
 			player.OnJumpInputDown();
