@@ -9,6 +9,7 @@ public class Crosshair : MonoBehaviour {
 	private float nextFire = 1.0f;
 	private IEnumerator coroutine;
 	private IEnumerator start;
+	public 
 
 
 	public void moveCrossHair(Vector2 input) {
@@ -21,29 +22,35 @@ public class Crosshair : MonoBehaviour {
 		yield return new WaitForSeconds(waitTime);
 	}
 
-	void Start() {
-		start = Delay(5.0f);
-		StartCoroutine(start);
+	public void shoot() {
+		coroutine = Delay(0.8f);
+		StartCoroutine(coroutine);
+		RaycastHit hit;
+		if (Physics.Raycast (transform.position, Vector3.forward, out hit)) {
+			if (hit.collider.tag == "Player") {
+				transform();
+			}
+		}
 	}
 
-	void Update() {
+	public void fireRate() {
 
 		coroutine = Delay(0.8f);
 		myTime = myTime + Time.deltaTime;
-		if(Input.GetButton("Space") && myTime > nextFire) {
-			
-			StartCoroutine(coroutine);
-			Fire();
+		if(myTime >= nextFire) {
+			shoot();
 			myTime = 0.0f;
 		}
 	}
 
-	public void Fire() {
-    	RaycastHit hit;
-		if (Physics.Raycast (transform.position, Vector3.forward, out hit)) {
-			if(hit.collider.tag=="Player"){
-				print("transform");
-			}
-		}
+	private void delay() {
+		delay = Delay(5.0f);
+		StartCoroutine(delay);
+	}
+
+	public void transform() {
+		GameObject obj = Instantiate(_platformPrefab, _transform);
+        Platform platformComponent = obj.GetComponent<Platform>();
+        platformComponent.Init();
 	}
 }
