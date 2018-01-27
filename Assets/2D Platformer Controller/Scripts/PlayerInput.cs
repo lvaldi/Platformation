@@ -4,6 +4,14 @@
 public class PlayerInput : MonoBehaviour
 {
     private Player player;
+	public enum PLAYERS{
+		Player1,
+		Player2,
+		Player3,
+		Player4
+	}
+
+	public PLAYERS playerNumber;
 
     private void Start()
     {
@@ -15,14 +23,27 @@ public class PlayerInput : MonoBehaviour
         Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         player.SetDirectionalInput(directionalInput);
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            player.OnJumpInputDown();
-        }
+		switch (playerNumber) {
+		case PLAYERS.Player1:
+			jumpControl ("Jump");
+			break;
+		case PLAYERS.Player2:
+			jumpControl ("Jump_1");
+			break;
 
-        if (Input.GetButtonUp("Jump"))
-        {
-            player.OnJumpInputUp();
-        }
+		}
+
     }
+
+	private void jumpControl(string action) {
+		if (Input.GetButtonDown(action))
+		{
+			player.OnJumpInputDown();
+		}
+
+		if (Input.GetButtonUp(action))
+		{
+			player.OnJumpInputUp();
+		}
+	}
 }
