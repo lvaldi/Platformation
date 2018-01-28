@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Crosshair : MonoBehaviour {
+
+	public delegate void OnPlayerKill();
+	public OnPlayerKill onPlayerKill;
 	
 	public float speed = 0.5f;
 	[SerializeField]
@@ -15,6 +18,8 @@ public class Crosshair : MonoBehaviour {
     private float _startDelay = 5.0f;
     private IEnumerator coroutine;
     private bool canShoot;
+
+
 
     [SerializeField]
     private GameObject[] _platformPrefabs;
@@ -35,15 +40,19 @@ public class Crosshair : MonoBehaviour {
 
 	public void Shoot() 
 	{
+		Vector2 posBeforeDelay = transform.position;
 		coroutine = DelayShot(_bulletTravelDelay);
 		StartCoroutine(coroutine);
-		RaycastHit hit;
-		if (Physics.Raycast (transform.position, Vector3.forward, out hit)) 
-		{
-			if (hit.collider.tag == "Player") 
-			{
-				CreatePlatform();
-			}
+		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
+
+
+
+		if (colliderHit != null) {
+			CreatePlatform (colliderHit.gameObject);
+			
+			Debug.Log ("Hit the player");
+		} else {
+			Debug.Log ("Missed the player");
 		}
 	}
 
@@ -52,25 +61,31 @@ public class Crosshair : MonoBehaviour {
 		if(!canShoot)
             return;
 
-        _previousShotTime = _previousShotTime - Time.time;
+		_previousShotTime = Time.time - _previousShotTime ;
 		if(_previousShotTime >= _shotCooldownTime) 
 		{
 			Shoot();
 		}
 	}
 
-	private void DelayStart() 
-	{
-		IEnumerator startDelay = DelayShot(_startDelay);
-		StartCoroutine(startDelay);
-        canShoot = true;
-    }
+	public void DelayStart(){
+		Invoke ("setCanShootTrue", 0.1f);
+	}
 
-	public void CreatePlatform() 
+	void setCanShootTrue() {
+		canShoot = true;
+	}
+
+	public void CreatePlatform(GameObject player) 
 	{
-		GameObject obj = Instantiate(_platformPrefabs[0], this.transform);
+		Vector3 spawnPosition = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
+		GameObject obj = Instantiate(_platformPrefabs[0],spawnPosition,Quaternion.identity);
         Platform platformComponent = obj.GetComponent<Platform>();
         platformComponent.Init();
+
+		onPlayerKill ();
 	}
+
+
 
 }

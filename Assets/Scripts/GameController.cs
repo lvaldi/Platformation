@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+
+
 	[SerializeField]
 	//Amount of time each round
 	private float roundTime;
@@ -27,6 +29,10 @@ public class GameController : MonoBehaviour {
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
 		crosshair = GameObject.FindGameObjectsWithTag ("Crosshair");
+			
+
+
+		setupRound ();
 	}
 	
 	// Update is called once per frame
@@ -46,17 +52,22 @@ public class GameController : MonoBehaviour {
 		timer = roundTime;
 	}
 
+	void setupRound() {
+		setCrossHairActive ();
+	}
+
 	void endRound() {
 		changeMainPlayer ();
-		setCrossHairActive ();
+		setupRound ();
 		resetTimer ();
 	}
 
 
 	void changeMainPlayer() {
-		mainPlayer++;
-		if (mainPlayer > maxPlayers) {
+		if (mainPlayer+1 > maxPlayers){
 			mainPlayer = 1;
+		} else {
+			mainPlayer++;
 		}
 
 		mainPlayerinputControls.setCurrentPlayer (mainPlayer);
@@ -64,12 +75,28 @@ public class GameController : MonoBehaviour {
 	}
 
 	void setCrossHairActive() {
+		Debug.Log (mainPlayer + " Crosshair disabled");
+		int i = -2;
 		foreach (GameObject xhair in crosshair) {
 			if (xhair.name == "Crosshair_" + mainPlayer) {
 				xhair.SetActive (false);
 			} else {
 				xhair.SetActive (true);
+				xhair.GetComponent<Crosshair> ().DelayStart ();
+
+				xhair.GetComponent<Crosshair> ().onPlayerKill += endRound;
 			}
+			xhair.transform.position = new Vector2 (i*5, 0);
+			i++;
+		}
+
+
+	}
+
+	void OnDestroy()
+	{
+		for (int i = 0; i < crosshair.Length; ++i) {
+			crosshair [i].GetComponent<Crosshair> ().onPlayerKill -= endRound;
 		}
 	}
 }

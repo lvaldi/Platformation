@@ -1,27 +1,23 @@
 ﻿using UnityEngine;
 
+public enum PLAYERS{
+	Player1,
+	Player2,
+	Player3,
+	Player4
+}
+
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour
 {
-
-	public enum PLAYERS{
-		Player1,
-		Player2,
-		Player3,
-		Player4
-	}
-
-	private Crosshair crosshair;
 	private int playerNumber;
-	private bool isTriggerDown;
 	public Player player;
 	public PLAYERS currentPlayer;
 
     private void Start()
     {
-		isTriggerDown = false;
 		playerNumber = (int)currentPlayer + 1;
-		crosshair = GameObject.Find ("Crosshair_" + playerNumber).GetComponent<Crosshair>();
+//		crosshair = GameObject.Find ("Crosshair_" + playerNumber).GetComponent<Crosshair>();
         player = GetComponent<Player>();
     }
 
@@ -32,14 +28,14 @@ public class PlayerInput : MonoBehaviour
 
 	public void setCurrentPlayer(int p) {
 		currentPlayer = (PLAYERS)p;
-		playerNumber = (int)p + 1;
+		playerNumber = p;
 	}
 
 	void playerControls() {
 		jumpAction ("Jump_" + playerNumber);
 		directionalMovement ("Horizontal_L_" + playerNumber);
-		crosshairMovement ("Horizontal_R_" + playerNumber,"Vertical_R_"+playerNumber);
-		shootingTrigger("Fire_"+playerNumber);
+//		crosshairMovement ("Horizontal_R_" + playerNumber,"Vertical_R_"+playerNumber);
+//		shootingTrigger("Fire_"+playerNumber);
 	}
 
 	void directionalMovement(string horizontal) {
@@ -59,23 +55,23 @@ public class PlayerInput : MonoBehaviour
 		}
 	}
 
-	void shootingTrigger(string action){
-		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
-            //TODO - Shoot button
-            crosshair.AttemptShot();
-            Debug.Log (Input.GetAxis (action));
-			isTriggerDown = true;
-		}
-
-		if (Input.GetAxis (action) <= 0) {
-			isTriggerDown = false;
-		}
-
-
-	}
-
-	void crosshairMovement(string horizontal, string vertical) {
-		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
-		//crosshair.moveCrossHair (directionalInput);
-	}
+//	void shootingTrigger(string action){
+//		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
+//            //TODO - Shoot button
+//            crosshair.AttemptShot();
+//            Debug.Log (Input.GetAxis (action));
+//			isTriggerDown = true;
+//		}
+//
+//		if (Input.GetAxis (action) <= 0) {
+//			isTriggerDown = false;
+//		}
+//
+//
+//	}
+//
+//	void crosshairMovement(string horizontal, string vertical) {
+//		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+//		crosshair.moveCrossHair (directionalInput);
+//	}
 }
