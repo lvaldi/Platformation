@@ -21,10 +21,13 @@ public class Crosshair : MonoBehaviour {
     private bool canShoot;
 
     private GameObject _chosenPlatform;
+	[Header("UI")]
     [SerializeField]
     private TextMeshProUGUI _killCountTextMesh;
+    [SerializeField]
+    private SpriteRenderer _previewPlatformSpriteRenderer;
 
-
+    [Header("Platform Prefabs")]
     [SerializeField]
     private GameObject[] _platformPrefabs;
 	[SerializeField]
@@ -106,10 +109,20 @@ public class Crosshair : MonoBehaviour {
 		if (r == 0) {
 			index = (int)Random.Range(0, _platformPrefabs.Length);
             _chosenPlatform = _platformPrefabs[index];
-        }else {
+        }
+		else 
+		{
             index = (int)Random.Range(0, _trapPrefabs.Length);
             _chosenPlatform = _trapPrefabs[index];
         }
+
+        SetupPreviewUI(_chosenPlatform.GetComponent<SpriteRenderer>().sprite);
+    }
+
+	private void SetupPreviewUI(Sprite previewSprite)
+	{
+        print(previewSprite);
+        _previewPlatformSpriteRenderer.sprite = previewSprite;
     }
 
 	public void UpdateKillCount()
