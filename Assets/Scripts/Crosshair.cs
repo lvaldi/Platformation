@@ -46,8 +46,9 @@ public class Crosshair : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(waitTime);
 		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
-		
-		if (colliderHit != null) {
+		Collider2D safeAreaHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("SafeArea"));
+
+		if (colliderHit != null && safeAreaHit == null) {
             OnHitPlayer(colliderHit);
         } 
 		else 
