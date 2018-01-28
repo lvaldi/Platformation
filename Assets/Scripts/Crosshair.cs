@@ -36,6 +36,8 @@ public class Crosshair : MonoBehaviour {
     private GameObject[] _platformPrefabs;
 	[SerializeField]
     private GameObject[] _trapPrefabs;
+    [SerializeField]
+    private GameObject _bombPrefab;
 
 
     private int _killCount;
@@ -117,19 +119,26 @@ public class Crosshair : MonoBehaviour {
 		onPlayerKill ();
 	}
 
-	public void DesignatePlatformIndex()
+	public void DesignatePlatformIndex(bool isBomb)
 	{
-        int index;
-        int r = (int)Random.Range(0, 10) % 2;
-		if (r == 0) {
-			index = (int)Random.Range(0, _platformPrefabs.Length);
-            _chosenPlatform = _platformPrefabs[index];
-        }
-		else 
+        if(isBomb)
 		{
-            index = (int)Random.Range(0, _trapPrefabs.Length);
-            _chosenPlatform = _trapPrefabs[index];
+            _chosenPlatform = _bombPrefab;
         }
+		else
+		{
+			int index;
+			int r = (int)Random.Range(0, 5) % 4;
+			if (r == 0) {
+				index = (int)Random.Range(0, _trapPrefabs.Length);
+				_chosenPlatform = _trapPrefabs[index];
+			}
+			else 
+			{
+				index = (int)Random.Range(0, _platformPrefabs.Length);
+				_chosenPlatform = _platformPrefabs[index];
+			}
+		}
 
         SetupPreviewUI(_chosenPlatform.GetComponent<SpriteRenderer>().sprite);
     }

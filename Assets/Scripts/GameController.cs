@@ -97,9 +97,11 @@ public class GameController : MonoBehaviour {
 
 	void SetupCrosshairs()
 	{
+		int randPlayerIndex = (int)Random.Range(0, _crosshairGOs.Length);
+
 		for (int i = 0; i < crosshairs.Length; ++i)
 		{
-            crosshairs[i].DesignatePlatformIndex();
+            crosshairs[i].DesignatePlatformIndex(randPlayerIndex == i);
             crosshairs[i].UpdateKillCount();
         }
 	}
@@ -169,7 +171,6 @@ public class GameController : MonoBehaviour {
 				xhair.SetActive (true);
                 Crosshair script = xhair.GetComponent<Crosshair>();
                 script.DelayStart ();
-				script.DesignatePlatformIndex();
 				script.onPlayerKill += endRound;
 			}
 			xhair.transform.position = new Vector2 (i*5, 0);
