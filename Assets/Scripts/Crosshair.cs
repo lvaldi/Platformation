@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Crosshair : MonoBehaviour {
-	
+
 	public float speed = 0.5f;
 	[SerializeField]
 	private float _previousShotTime = 0.0f;
@@ -15,10 +15,10 @@ public class Crosshair : MonoBehaviour {
     private float _startDelay = 5.0f;
     private IEnumerator coroutine;
     private bool canShoot;
+	
 
     [SerializeField]
     private GameObject[] _platformPrefabs;
-
 
 
     public void moveCrossHair(Vector2 input) 
@@ -72,5 +72,4 @@ public class Crosshair : MonoBehaviour {
         Platform platformComponent = obj.GetComponent<Platform>();
         platformComponent.Init();
 	}
-
 }
