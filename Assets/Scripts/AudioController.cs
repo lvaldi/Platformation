@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum AUDIO{
-	JUMP
-
+	GOAL,
+	JUMP,
+	SHOT,
+	WALL_IMPACT
 }
 
 [RequireComponent(typeof(AudioSource))]

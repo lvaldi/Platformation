@@ -14,6 +14,7 @@ public class Goal : MonoBehaviour
         if(other.tag == "Player")
         {
             GameController.instance.endRound();
+			AudioController.instance.PLAY (AUDIO.GOAL);
         }
     }
 }
