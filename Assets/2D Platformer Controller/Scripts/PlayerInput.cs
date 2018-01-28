@@ -3,8 +3,7 @@
 [RequireComponent(typeof(Player))]
 public class PlayerInput : MonoBehaviour
 {
-    
-	public PLAYERS currentPlayer;
+
 	public enum PLAYERS{
 		Player1,
 		Player2,
@@ -12,10 +11,11 @@ public class PlayerInput : MonoBehaviour
 		Player4
 	}
 
-	private Player player;
 	private Crosshair crosshair;
 	private int playerNumber;
 	private bool isTriggerDown;
+	public Player player;
+	public PLAYERS currentPlayer;
 
     private void Start()
     {
@@ -30,6 +30,11 @@ public class PlayerInput : MonoBehaviour
 		playerControls ();
     }
 
+	public void setCurrentPlayer(PLAYERS p) {
+		currentPlayer = p;
+		playerNumber = (int)p + 1;
+	}
+
 	void playerControls() {
 		jumpAction ("Jump_" + playerNumber);
 		directionalMovement ("Horizontal_L_" + playerNumber);
@@ -41,7 +46,6 @@ public class PlayerInput : MonoBehaviour
 		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), 0);
 		player.SetDirectionalInput(directionalInput);
 	}
-
 
 	void jumpAction(string action) {
 		if (Input.GetButtonDown(action))
@@ -72,6 +76,6 @@ public class PlayerInput : MonoBehaviour
 
 	void crosshairMovement(string horizontal, string vertical) {
 		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
-		crosshair.moveCrossHair (directionalInput);
+		//crosshair.moveCrossHair (directionalInput);
 	}
 }
