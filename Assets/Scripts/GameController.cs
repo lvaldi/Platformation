@@ -127,7 +127,17 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	void respawnPlayer(){
+	void respawnPlayer() {
 		player.transform.position = startPosition;
+	}
+
+	public void slowPlayer() {
+		Player playerChange = mainPlayerGameObject.GetComponent<Player>();
+		playerChange.moveSpeed = 2.0f;
+    }
+
+	public void restore() {
+		Player playerChange = mainPlayerGameObject.GetComponent<Player>();
+		playerChange.moveSpeed = 6.0f;
 	}
 }
