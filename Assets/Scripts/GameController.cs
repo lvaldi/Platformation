@@ -112,7 +112,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void setCrossHairActive() {
-		Debug.Log (mainPlayer + " Crosshair disabled");
+		
 		int i = -2;
 		foreach (GameObject xhair in crosshairGOs) {
 			if (xhair.name == "Crosshair_" + mainPlayer) {
