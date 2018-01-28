@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class Crosshair : MonoBehaviour {
@@ -26,7 +25,7 @@ public class Crosshair : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _killCountTextMesh;
     [SerializeField]
-    private Image _previewPlatformSpriteRenderer;
+    private SpriteRenderer _previewPlatformSpriteRenderer;
 
     [Header("Platform Prefabs")]
     [SerializeField]
@@ -47,8 +46,9 @@ public class Crosshair : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(waitTime);
 		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
-		
-		if (colliderHit != null) {
+		Collider2D safeAreaHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("SafeArea"));
+
+		if (colliderHit != null && safeAreaHit == null) {
             OnHitPlayer(colliderHit);
         } 
 		else 
@@ -122,6 +122,7 @@ public class Crosshair : MonoBehaviour {
 
 	private void SetupPreviewUI(Sprite previewSprite)
 	{
+        //print(previewSprite);
         _previewPlatformSpriteRenderer.sprite = previewSprite;
     }
 

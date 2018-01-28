@@ -8,7 +8,9 @@ public class TeleporterTrap : Trap {
 	{
 		if(other.tag == "Player")
 		{
-			other.gameObject.transform.GetComponent<Player> ().respawnPlayer ();
+			Vector3 position = other.gameObject.transform.position;
+			Vector3 newPosition = position + (Vector3.up * 5);
+			other.gameObject.transform.position = newPosition;
 		}
 	}
 }
