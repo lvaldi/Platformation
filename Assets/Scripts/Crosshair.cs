@@ -5,51 +5,69 @@ using UnityEngine;
 public class Crosshair : MonoBehaviour {
 
 	public float speed = 0.5f;
-	private float myTime = 0.0f;
-	private float nextFire = 1.0f;
-	private IEnumerator coroutine;
-	private IEnumerator start;
-	public 
+	[SerializeField]
+	private float _previousShotTime = 0.0f;
+	[SerializeField]
+	private float _shotCooldownTime = 1.0f;
+	[SerializeField]
+    private float _bulletTravelDelay = 0.8f;
+    [SerializeField]
+    private float _startDelay = 5.0f;
+    private IEnumerator coroutine;
+    private bool canShoot;
+
+    [SerializeField]
+    private GameObject[] _platformPrefabs;
 
 
-	public void moveCrossHair(Vector2 input) {
+    public void moveCrossHair(Vector2 input) 
+	{
 		float x = transform.position.x + input.x*speed;
 		float y = transform.position.y + input.y*speed;
 		transform.position = new Vector3(x, y, 0);
 	}
 
-	private IEnumerator Delay(float waitTime) {
+	private IEnumerator DelayShot(float waitTime) 
+	{
 		yield return new WaitForSeconds(waitTime);
 	}
 
-	public void shoot() {
-		coroutine = Delay(0.8f);
+	public void Shoot() 
+	{
+		coroutine = DelayShot(_bulletTravelDelay);
 		StartCoroutine(coroutine);
 		RaycastHit hit;
-		if (Physics.Raycast (transform.position, Vector3.forward, out hit)) {
-			if (hit.collider.tag == "Player") {
-				transform();
+		if (Physics.Raycast (transform.position, Vector3.forward, out hit)) 
+		{
+			if (hit.collider.tag == "Player") 
+			{
+				CreatePlatform();
 			}
 		}
 	}
 
-	public void fireRate() {
+	public void AttemptShot() 
+	{
+		if(!canShoot)
+            return;
 
-		coroutine = Delay(0.8f);
-		myTime = myTime + Time.deltaTime;
-		if(myTime >= nextFire) {
-			shoot();
-			myTime = 0.0f;
+        _previousShotTime = _previousShotTime - Time.time;
+		if(_previousShotTime >= _shotCooldownTime) 
+		{
+			Shoot();
 		}
 	}
 
-	private void delay() {
-		delay = Delay(5.0f);
-		StartCoroutine(delay);
-	}
+	private void DelayStart() 
+	{
+		IEnumerator startDelay = DelayShot(_startDelay);
+		StartCoroutine(startDelay);
+        canShoot = true;
+    }
 
-	public void transform() {
-		GameObject obj = Instantiate(_platformPrefab, _transform);
+	public void CreatePlatform() 
+	{
+		GameObject obj = Instantiate(_platformPrefabs[0], this.transform);
         Platform platformComponent = obj.GetComponent<Platform>();
         platformComponent.Init();
 	}

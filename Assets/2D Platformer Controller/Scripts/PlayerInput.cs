@@ -57,9 +57,9 @@ public class PlayerInput : MonoBehaviour
 
 	void shootingTrigger(string action){
 		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
-			//TODO - Shoot button
-			//crosshair.shoot();
-			Debug.Log (Input.GetAxis (action));
+            //TODO - Shoot button
+            crosshair.AttemptShot();
+            Debug.Log (Input.GetAxis (action));
 			isTriggerDown = true;
 		}
 
