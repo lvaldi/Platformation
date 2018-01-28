@@ -39,7 +39,7 @@ public class BulletAnimation : MonoBehaviour {
 	}
 
 	public void startShot(Vector3 location) {
-		if (transform.position == targetPoint) {
+		if (withinDistance(targetPoint)) {
 			//Position
 			transform.position = startPoint;
 			targetPoint = location;
