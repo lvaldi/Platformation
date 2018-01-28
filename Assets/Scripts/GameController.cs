@@ -20,8 +20,12 @@ public class GameController : MonoBehaviour {
 	//Max amount of players allowed in game
 	readonly int maxPlayers = 4;
 
-	//Crosshair gameobjects
+	//Start position
+	readonly Vector3 startPosition = new Vector3(-4.377336f,3.651274f,0f);
+
+	//Referenced Gameobjects
 	GameObject[] crosshair;
+	GameObject player;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +33,7 @@ public class GameController : MonoBehaviour {
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
 		crosshair = GameObject.FindGameObjectsWithTag ("Crosshair");
+		player = GameObject.Find ("Player");
 			
 
 
@@ -52,14 +57,16 @@ public class GameController : MonoBehaviour {
 		timer = roundTime;
 	}
 
-	void setupRound() {
-		setCrossHairActive ();
-	}
 
 	void endRound() {
 		changeMainPlayer ();
 		setupRound ();
 		resetTimer ();
+	}
+
+	void setupRound() {
+		setCrossHairActive ();
+		respawnPlayer ();
 	}
 
 
@@ -89,8 +96,10 @@ public class GameController : MonoBehaviour {
 			xhair.transform.position = new Vector2 (i*5, 0);
 			i++;
 		}
+	}
 
-
+	void respawnPlayer(){
+		player.transform.position = startPosition;
 	}
 
 	void OnDestroy()
