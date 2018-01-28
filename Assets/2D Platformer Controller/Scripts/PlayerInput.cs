@@ -30,8 +30,8 @@ public class PlayerInput : MonoBehaviour
 		playerControls ();
     }
 
-	public void setCurrentPlayer(PLAYERS p) {
-		currentPlayer = p;
+	public void setCurrentPlayer(int p) {
+		currentPlayer = (PLAYERS)p;
 		playerNumber = (int)p + 1;
 	}
 

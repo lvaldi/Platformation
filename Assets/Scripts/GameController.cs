@@ -70,5 +70,6 @@ public class GameController : MonoBehaviour {
 			} else {
 				xhair.SetActive (true);
 			}
+		}
 	}
 }
