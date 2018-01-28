@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour {
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
 		crosshairGOs = GameObject.FindGameObjectsWithTag ("Crosshair");
-		player = GameObject.Find ("Player");
+		player = GameObject.Find ("Climber");
         startPosition = player.transform.position;
 
         crosshairs = new Crosshair[crosshairGOs.Length];

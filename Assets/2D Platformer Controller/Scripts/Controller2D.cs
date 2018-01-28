@@ -6,12 +6,15 @@ public class Controller2D : RaycastController
     private float maxClimbAngle = 80f;
     private float maxDescendAngle = 80f;
 
+    private const float IDLE_INPUT_AMOUNT = 0.25f;
+
     public CollisionInfo collisions;
     [HideInInspector]
     public Vector2 playerInput;
 
     private Animator animator;
-    private GameObject climberPuppet;
+    [SerializeField]
+    private GameObject climberPuppetParent;
 
     public override void Start()
     {
@@ -32,22 +35,29 @@ public class Controller2D : RaycastController
         collisions.moveAmountOld = moveAmount;
         playerInput = input;
 
-        if (moveAmount.x != 0)
+        collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
+        if (Mathf.Abs(moveAmount.x) > 0)
         {
-            animator.SetBool("isRunning", true);
-            collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
-            if (moveAmount.x > 0)
+            if (animator != null && climberPuppetParent != null)
             {
-                climberPuppet.transform.localScale = new Vector2(1, climberPuppet.transform.localScale.y);
-            }
-            else
-            {
-                climberPuppet.transform.localScale = new Vector2(-1, climberPuppet.transform.localScale.y);
+                animator.SetBool("isRunning", true);
+
+                if (moveAmount.x > 0)
+                {
+                    climberPuppetParent.transform.localScale = new Vector2(1, climberPuppetParent.transform.localScale.y);
+                }
+                else
+                {
+                    climberPuppetParent.transform.localScale = new Vector2(-1, climberPuppetParent.transform.localScale.y);
+                }
             }
         }
-        else
+        if (Mathf.Abs(playerInput.x) <= IDLE_INPUT_AMOUNT)
         {
-            animator.SetBool("isRunning", false);
+            if (animator != null && climberPuppetParent != null)
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
 
         if (moveAmount.y < 0)
