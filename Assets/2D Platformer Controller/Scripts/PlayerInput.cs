@@ -34,7 +34,6 @@ public class PlayerInput : MonoBehaviour
 	void playerControls() {
 		jumpAction ("Jump_" + playerNumber);
 		directionalMovement ("Horizontal_L_" + playerNumber);
-
 	}
 
 	void directionalMovement(string horizontal) {

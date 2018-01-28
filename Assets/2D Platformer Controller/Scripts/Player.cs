@@ -83,11 +83,13 @@ public class Player : MonoBehaviour
                 velocity.y = wallLeap.y;
             }
             isDoubleJumping = false;
+			AudioController.instance.PLAY (AUDIO.JUMP);
         }
         if (controller.collisions.below)
         {
             velocity.y = maxJumpVelocity;
             isDoubleJumping = false;
+			AudioController.instance.PLAY (AUDIO.JUMP);
         }
         if (canDoubleJump && !controller.collisions.below && !isDoubleJumping && !wallSliding)
         {

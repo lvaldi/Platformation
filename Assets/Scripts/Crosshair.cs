@@ -17,9 +17,12 @@ public class Crosshair : MonoBehaviour {
 	[SerializeField]
     private float _bulletTravelDelay = 3f;
     [SerializeField]
-    private float _startDelay = 5.0f;
+    private float _startDelay = 0f;
     private IEnumerator coroutine;
     private bool canShoot;
+
+	[SerializeField]
+	private GameObject bullet;
 
     private GameObject _chosenPlatform;
 	[Header("UI")]
@@ -33,6 +36,7 @@ public class Crosshair : MonoBehaviour {
     private GameObject[] _platformPrefabs;
 	[SerializeField]
     private GameObject[] _trapPrefabs;
+
 
     private int _killCount;
 
@@ -68,9 +72,11 @@ public class Crosshair : MonoBehaviour {
 
 	public void Shoot() 
 	{
+		
 		Vector2 posBeforeDelay = transform.position;
 		coroutine = DelayShot(_bulletTravelDelay,posBeforeDelay);
 		StartCoroutine(coroutine);
+		bullet.GetComponent<BulletAnimation> ().startShot (posBeforeDelay);
 		
 	}
 
