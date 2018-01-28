@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Crosshair : MonoBehaviour {
 
@@ -25,7 +26,7 @@ public class Crosshair : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _killCountTextMesh;
     [SerializeField]
-    private SpriteRenderer _previewPlatformSpriteRenderer;
+    private Image _previewPlatformImage;
 
     [Header("Platform Prefabs")]
     [SerializeField]
@@ -122,8 +123,7 @@ public class Crosshair : MonoBehaviour {
 
 	private void SetupPreviewUI(Sprite previewSprite)
 	{
-        //print(previewSprite);
-        _previewPlatformSpriteRenderer.sprite = previewSprite;
+        _previewPlatformImage.sprite = previewSprite;
     }
 
 	public void UpdateKillCount()
