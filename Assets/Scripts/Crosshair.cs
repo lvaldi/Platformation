@@ -6,7 +6,7 @@ public class Crosshair : MonoBehaviour {
 
 	public delegate void OnPlayerKill();
 	public OnPlayerKill onPlayerKill;
-	
+
 	public float speed = 0.5f;
 	[SerializeField]
 	private float _previousShotTime = 0.0f;
@@ -19,10 +19,13 @@ public class Crosshair : MonoBehaviour {
     private IEnumerator coroutine;
     private bool canShoot;
 
+    private GameObject _chosenPlatform;
 
 
     [SerializeField]
     private GameObject[] _platformPrefabs;
+	[SerializeField]
+    private GameObject[] _trapPrefabs;
 
 
 
@@ -79,13 +82,23 @@ public class Crosshair : MonoBehaviour {
 	public void CreatePlatform(GameObject player) 
 	{
 		Vector3 spawnPosition = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
-		GameObject obj = Instantiate(_platformPrefabs[0],spawnPosition,Quaternion.identity);
+		GameObject obj = Instantiate(_chosenPlatform, spawnPosition, Quaternion.identity);
         Platform platformComponent = obj.GetComponent<Platform>();
         platformComponent.Init();
 
 		onPlayerKill ();
 	}
 
-
-
+	public void DesignatePlatformIndex()
+	{
+        int index;
+        int r = (int)Random.Range(0, 10) % 2;
+		if (r == 0) {
+			index = (int)Random.Range(0, _platformPrefabs.Length);
+            _chosenPlatform = _platformPrefabs[index];
+        }else {
+            index = (int)Random.Range(0, _trapPrefabs.Length);
+            _chosenPlatform = _trapPrefabs[index];
+        }
+    }
 }

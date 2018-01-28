@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+    public static GameController instance;
 
-
-	[SerializeField]
+    [SerializeField]
 	//Amount of time each round
 	private float roundTime;
 	public float timer { get; private set; }
@@ -24,21 +24,41 @@ public class GameController : MonoBehaviour {
 	readonly Vector3 startPosition = new Vector3(-4.377336f,3.651274f,0f);
 
 	//Referenced Gameobjects
-	GameObject[] crosshair;
-	GameObject player;
+	GameObject[] crosshairGOs;
+    Crosshair[] crosshairs;
+    GameObject player;
+
+
+	public void Awake()
+	{
+		if(instance == null)
+		{
+            instance = this;
+        }
+		else if(instance != null)
+		{
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
 
 	// Use this for initialization
 	void Start () {
 		resetTimer ();
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
-		crosshair = GameObject.FindGameObjectsWithTag ("Crosshair");
+		crosshairGOs = GameObject.FindGameObjectsWithTag ("Crosshair");
 		player = GameObject.Find ("Player");
-			
+
+        crosshairs = new Crosshair[crosshairGOs.Length];
+        for (int i = 0; i < crosshairGOs.Length; ++i)
+		{
+            crosshairs[i] = crosshairGOs[i].GetComponent<Crosshair>();
+        }
 
 
-		setupRound ();
-	}
+        setupRound();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -58,10 +78,19 @@ public class GameController : MonoBehaviour {
 	}
 
 
-	void endRound() {
+	public void endRound() {
 		changeMainPlayer ();
 		setupRound ();
 		resetTimer ();
+        SetupCrosshairs();
+    }
+
+	void SetupCrosshairs()
+	{
+		for (int i = 0; i < crosshairs.Length; ++i)
+		{
+            crosshairs[i].DesignatePlatformIndex();
+        }
 	}
 
 	void setupRound() {
@@ -84,7 +113,7 @@ public class GameController : MonoBehaviour {
 	void setCrossHairActive() {
 		Debug.Log (mainPlayer + " Crosshair disabled");
 		int i = -2;
-		foreach (GameObject xhair in crosshair) {
+		foreach (GameObject xhair in crosshairGOs) {
 			if (xhair.name == "Crosshair_" + mainPlayer) {
 				xhair.SetActive (false);
 			} else {
@@ -100,12 +129,5 @@ public class GameController : MonoBehaviour {
 
 	void respawnPlayer(){
 		player.transform.position = startPosition;
-	}
-
-	void OnDestroy()
-	{
-		for (int i = 0; i < crosshair.Length; ++i) {
-			crosshair [i].GetComponent<Crosshair> ().onPlayerKill -= endRound;
-		}
 	}
 }
