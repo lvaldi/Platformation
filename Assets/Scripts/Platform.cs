@@ -14,7 +14,7 @@ public abstract class Platform : MonoBehaviour, IPlatform {
         
 
         _collider = this.gameObject.AddComponent<PolygonCollider2D>();
-        gameObject.layer = LayerMask.GetMask("Obstacle");
+
     }
 
     public virtual void Death()
