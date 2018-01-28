@@ -67,6 +67,8 @@ public class Crosshair : MonoBehaviour {
 		{
 			// Nothing happens
 		}
+
+		AudioController.instance.PLAY (AUDIO.WALL_IMPACT);
 	}
 
 	private void OnHitPlayer(Collider2D colliderHit)
@@ -79,12 +81,12 @@ public class Crosshair : MonoBehaviour {
 
 	public void Shoot() 
 	{
-		
+		AudioController.instance.PLAY (AUDIO.SHOT);
 		Vector2 posBeforeDelay = transform.position;
 		coroutine = DelayShot(_bulletTravelDelay,posBeforeDelay);
 		StartCoroutine(coroutine);
 		bullet.GetComponent<BulletAnimation> ().startShot (posBeforeDelay);
-		
+
 	}
 
 	public void AttemptShot() 
