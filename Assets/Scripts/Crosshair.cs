@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Crosshair : MonoBehaviour {
 
@@ -20,6 +21,8 @@ public class Crosshair : MonoBehaviour {
     private bool canShoot;
 
     private GameObject _chosenPlatform;
+    [SerializeField]
+    private TextMeshProUGUI _killCountTextMesh;
 
 
     [SerializeField]
@@ -27,7 +30,7 @@ public class Crosshair : MonoBehaviour {
 	[SerializeField]
     private GameObject[] _trapPrefabs;
 
-
+    private int _killCount;
 
     public void moveCrossHair(Vector2 input) 
 	{
@@ -42,14 +45,21 @@ public class Crosshair : MonoBehaviour {
 		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
 		
 		if (colliderHit != null) {
-			CreatePlatform (colliderHit.gameObject);
-			
-			Debug.Log ("Hit the player");
-		} else {
-			Debug.Log ("Missed the player");
+            OnHitPlayer(colliderHit);
+        } 
+		else 
+		{
+			// Nothing happens
 		}
-		
 	}
+
+	private void OnHitPlayer(Collider2D colliderHit)
+	{
+		CreatePlatform (colliderHit.gameObject);
+        _killCount++;
+
+        UpdateKillCount();
+    }
 
 	public void Shoot() 
 	{
@@ -100,5 +110,15 @@ public class Crosshair : MonoBehaviour {
             index = (int)Random.Range(0, _trapPrefabs.Length);
             _chosenPlatform = _trapPrefabs[index];
         }
+    }
+
+	public void UpdateKillCount()
+	{
+		_killCountTextMesh.text = "Kills: " + _killCount;
+	}
+
+	public void ResetKillCount()
+	{
+        _killCount = 0;
     }
 }
