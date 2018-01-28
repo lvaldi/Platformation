@@ -22,7 +22,7 @@ public class BulletAnimation : MonoBehaviour {
 	[SerializeField]
 	float crossHair;
 
-	float timeTaken = 2.2f;
+	float timeTaken = 3.0f;
 	float startTime;
 
 	// Use this for initialization
@@ -72,7 +72,6 @@ public class BulletAnimation : MonoBehaviour {
 
 	bool withinDistance (Vector3 targetPoint) {
 		float distance = Vector3.Distance(targetPoint, transform.position);
-		Debug.Log (distance);
 		if (distance < 0.5) {
 			return true;
 		} else {
