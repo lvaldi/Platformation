@@ -10,10 +10,13 @@ public class Controller2D : RaycastController
     [HideInInspector]
     public Vector2 playerInput;
 
+    private Animator animator;
+    private GameObject climberPuppet;
+
     public override void Start()
     {
         base.Start();
-
+        animator = GetComponentInChildren<Animator>();
         collisions.faceDir = 1;
     }
 
@@ -31,7 +34,20 @@ public class Controller2D : RaycastController
 
         if (moveAmount.x != 0)
         {
+            animator.SetBool("isRunning", true);
             collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
+            if (moveAmount.x > 0)
+            {
+                climberPuppet.transform.localScale = new Vector2(1, climberPuppet.transform.localScale.y);
+            }
+            else
+            {
+                climberPuppet.transform.localScale = new Vector2(-1, climberPuppet.transform.localScale.y);
+            }
+        }
+        else
+        {
+            animator.SetBool("isRunning", false);
         }
 
         if (moveAmount.y < 0)
