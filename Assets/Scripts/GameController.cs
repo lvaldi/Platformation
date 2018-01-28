@@ -23,12 +23,19 @@ public class GameController : MonoBehaviour {
 	readonly int maxPlayers = 4;
 
     //Referenced Gameobjects
-    GameObject[] crosshairGOs;
+	[SerializeField]
+    private GameObject[] _crosshairGOs;
     Crosshair[] crosshairs;
     GameObject player;
 
     [Header("UI"), SerializeField]
     private TextMeshProUGUI _timerTextMesh;
+    [SerializeField]
+    private TextMeshProUGUI _currentPlayerTextMesh;
+    [SerializeField]
+    private float _fadeDuration = 2.0f;
+    private bool _readyToFade;
+    private float _startTime;
 
     public void Awake()
 	{
@@ -48,13 +55,13 @@ public class GameController : MonoBehaviour {
 		resetTimer ();
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
-		crosshairGOs = GameObject.FindGameObjectsWithTag ("Crosshair");
+		
 		player = GameObject.Find ("Climber");
 
-        crosshairs = new Crosshair[crosshairGOs.Length];
-        for (int i = 0; i < crosshairGOs.Length; ++i)
+        crosshairs = new Crosshair[_crosshairGOs.Length];
+        for (int i = 0; i < _crosshairGOs.Length; ++i)
 		{
-            crosshairs[i] = crosshairGOs[i].GetComponent<Crosshair>();
+            crosshairs[i] = _crosshairGOs[i].GetComponent<Crosshair>();
         }
 
         setupRound();
@@ -63,7 +70,9 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		countDownTimer ();
-	}
+
+        FadeCurrentPlayerText();
+    }
 
 	void countDownTimer() {
 		timer -= Time.deltaTime;
@@ -72,7 +81,7 @@ public class GameController : MonoBehaviour {
 		}
 
         int timerAsInt = (int)Mathf.Floor(timer);
-        _timerTextMesh.text = "Timer: " + timerAsInt.ToString();
+        _timerTextMesh.text = "Timer: " + timerAsInt;
     }
 
 	void resetTimer() {
@@ -98,9 +107,10 @@ public class GameController : MonoBehaviour {
 	void setupRound() {
 		setCrossHairActive ();
 		player.GetComponent<Player>().respawnPlayer ();
+		
 		SetupCrosshairs();
-
-	}
+        UpdateCurrentPlayerUI();
+    }
 		
 	void changeMainPlayer() {
 		if (mainPlayer+1 > maxPlayers){
@@ -109,13 +119,50 @@ public class GameController : MonoBehaviour {
 			mainPlayer++;
 		}
 
-		mainPlayerinputControls.setCurrentPlayer (mainPlayer);
+        UpdateCurrentPlayerUI();
+        mainPlayerinputControls.setCurrentPlayer (mainPlayer);
+	}
+
+	private void UpdateCurrentPlayerUI()
+	{
+		_currentPlayerTextMesh.text = "Current Player: \n " + mainPlayer.ToString();
+        _readyToFade = true;
+		_startTime = Time.time;
+
+        Color32 currentPlayerColor = _crosshairGOs[mainPlayer - 1].GetComponent<SpriteRenderer>().color;
+        _currentPlayerTextMesh.faceColor = new Color32(currentPlayerColor.r, currentPlayerColor.g, currentPlayerColor.b, 255);
+    }
+
+	private void FadeCurrentPlayerText()
+	{
+        if(!_readyToFade)
+            return;
+
+        
+        float currentTime = Time.time;
+        if(currentTime <= _startTime + _fadeDuration)
+		{
+            float ratio = (currentTime - _startTime) / _fadeDuration;
+			byte alpha = (byte)(255f - ratio * 255);
+            _currentPlayerTextMesh.faceColor = new Color32(_currentPlayerTextMesh.faceColor.r, 
+															_currentPlayerTextMesh.faceColor.g,
+															_currentPlayerTextMesh.faceColor.b,
+															alpha);
+        }
+		else
+		{
+			_currentPlayerTextMesh.faceColor = new Color32(_currentPlayerTextMesh.faceColor.r, 
+															_currentPlayerTextMesh.faceColor.g,
+															_currentPlayerTextMesh.faceColor.b,
+															0);
+			_readyToFade = false;
+		}
 	}
 
 	void setCrossHairActive() {
 		
 		int i = -2;
-		foreach (GameObject xhair in crosshairGOs) {
+		foreach (GameObject xhair in _crosshairGOs) {
 			if (xhair.name == "Crosshair_" + mainPlayer) {
 				xhair.SetActive (false);
 			} else {
