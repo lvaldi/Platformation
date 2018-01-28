@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
 
 public class GameController : MonoBehaviour {
 
@@ -25,8 +27,10 @@ public class GameController : MonoBehaviour {
     Crosshair[] crosshairs;
     GameObject player;
 
+    [Header("UI"), SerializeField]
+    private TextMeshProUGUI _timerTextMesh;
 
-	public void Awake()
+    public void Awake()
 	{
 		if(instance == null)
 		{
@@ -53,7 +57,6 @@ public class GameController : MonoBehaviour {
             crosshairs[i] = crosshairGOs[i].GetComponent<Crosshair>();
         }
 
-
         setupRound();
     }
 	
@@ -62,13 +65,15 @@ public class GameController : MonoBehaviour {
 		countDownTimer ();
 	}
 
-
 	void countDownTimer() {
 		timer -= Time.deltaTime;
 		if (timer < 0) {
 			endRound ();
 		}
-	}
+
+        int timerAsInt = (int)Mathf.Floor(timer);
+        _timerTextMesh.text = "Timer: " + timerAsInt.ToString();
+    }
 
 	void resetTimer() {
 		timer = roundTime;
@@ -79,7 +84,6 @@ public class GameController : MonoBehaviour {
 		changeMainPlayer ();
 		setupRound ();
 		resetTimer ();
-        SetupCrosshairs();
     }
 
 	void SetupCrosshairs()
@@ -87,14 +91,16 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < crosshairs.Length; ++i)
 		{
             crosshairs[i].DesignatePlatformIndex();
+            crosshairs[i].UpdateKillCount();
         }
 	}
 
 	void setupRound() {
 		setCrossHairActive ();
 		player.GetComponent<Player>().respawnPlayer ();
-	}
+		SetupCrosshairs();
 
+	}
 
 	void changeMainPlayer() {
 		if (mainPlayer+1 > maxPlayers){
