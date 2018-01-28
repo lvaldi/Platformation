@@ -110,7 +110,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		mainPlayerinputControls.setCurrentPlayer (mainPlayer);
-		Debug.Log ("Current Player Turn :" + mainPlayer);
 	}
 
 	void setCrossHairActive() {
