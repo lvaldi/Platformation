@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class Platform : MonoBehaviour, IPlatform {
 
-    private SpriteRenderer _spriteRenderer;
+    protected SpriteRenderer _spriteRenderer;
+    protected PolygonCollider2D _collider;
 
     public virtual void Init()
 	{
@@ -12,7 +13,8 @@ public abstract class Platform : MonoBehaviour, IPlatform {
 
         
 
-        this.gameObject.AddComponent<PolygonCollider2D>();
+        _collider = this.gameObject.AddComponent<PolygonCollider2D>();
+        gameObject.layer = LayerMask.GetMask("Obstacle");
     }
 
     public virtual void Death()
