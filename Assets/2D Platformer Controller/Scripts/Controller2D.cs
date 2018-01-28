@@ -6,14 +6,20 @@ public class Controller2D : RaycastController
     private float maxClimbAngle = 80f;
     private float maxDescendAngle = 80f;
 
+    private const float IDLE_INPUT_AMOUNT = 0.25f;
+
     public CollisionInfo collisions;
     [HideInInspector]
     public Vector2 playerInput;
 
+    private Animator animator;
+    [SerializeField]
+    private GameObject climberPuppetParent;
+
     public override void Start()
     {
         base.Start();
-
+        animator = GetComponentInChildren<Animator>();
         collisions.faceDir = 1;
     }
 
@@ -32,6 +38,26 @@ public class Controller2D : RaycastController
         if (moveAmount.x != 0)
         {
             collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
+            if (animator != null && climberPuppetParent != null)
+            {
+                animator.SetBool("isRunning", true);
+
+                if (moveAmount.x > 0)
+                {
+                    climberPuppetParent.transform.localScale = new Vector2(1, climberPuppetParent.transform.localScale.y);
+                }
+                else
+                {
+                    climberPuppetParent.transform.localScale = new Vector2(-1, climberPuppetParent.transform.localScale.y);
+                }
+            }
+        }
+        if (Mathf.Abs(playerInput.x) <= IDLE_INPUT_AMOUNT)
+        {
+            if (animator != null && climberPuppetParent != null)
+            {
+                animator.SetBool("isRunning", false);
+            }
         }
 
         if (moveAmount.y < 0)

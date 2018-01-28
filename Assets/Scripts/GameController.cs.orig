@@ -49,7 +49,12 @@ public class GameController : MonoBehaviour {
 		mainPlayer = 1;
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
 		crosshairGOs = GameObject.FindGameObjectsWithTag ("Crosshair");
+<<<<<<< HEAD
+		player = GameObject.Find ("Player");
+=======
 		player = GameObject.Find ("Climber");
+        startPosition = player.transform.position;
+>>>>>>> character-art
 
         crosshairs = new Crosshair[crosshairGOs.Length];
         for (int i = 0; i < crosshairGOs.Length; ++i)
