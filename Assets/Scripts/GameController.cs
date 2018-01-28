@@ -12,11 +12,12 @@ public class GameController : MonoBehaviour {
 	//Chosen player to be Main Player
 	public int mainPlayer { get; private set; } 
 	//Main Player Character game object
-	public GameObject mainPlayerGameObject;
-	PlayerInput mainPlayerinputControls;
+	
+    [SerializeField]
+    private PlayerInput[] _playerInputs;
 
-	//Max amount of players allowed in game
-	readonly int maxPlayers = 4;
+    //Max amount of players allowed in game
+    readonly int maxPlayers = 4;
 
 	//Crosshair gameobjects
 	GameObject[] crosshair;
@@ -25,7 +26,7 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		resetTimer ();
 		mainPlayer = 1;
-		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
+		
 		crosshair = GameObject.FindGameObjectsWithTag ("Crosshair");
 	}
 	
@@ -59,9 +60,20 @@ public class GameController : MonoBehaviour {
 			mainPlayer = 1;
 		}
 
-		mainPlayerinputControls.setCurrentPlayer (mainPlayer);
-		Debug.Log ("Current Player Turn :" + mainPlayer);
-	}
+        for (int i = 0; i < _playerInputs.Length; ++i)
+		{
+			if(_playerInputs[i].currentPlayer == (PlayerInput.PLAYERS)(mainPlayer + 1))
+			{
+                _playerInputs[i].SetCurrentPlayerState(PlayerInput.PlayerState.MOVING);
+            }
+			else
+			{
+				_playerInputs[i].SetCurrentPlayerState(PlayerInput.PlayerState.SHOOTING);
+			}
+		}
+
+        Debug.Log("Current Player Turn :" + mainPlayer);
+    }
 
 	void setCrossHairActive() {
 		foreach (GameObject xhair in crosshair) {
