@@ -122,7 +122,7 @@ public class Crosshair : MonoBehaviour {
 
 	private void SetupPreviewUI(Sprite previewSprite)
 	{
-        print(previewSprite);
+        //print(previewSprite);
         _previewPlatformSpriteRenderer.sprite = previewSprite;
     }
 

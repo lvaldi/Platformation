@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour {
 		SetupCrosshairs();
 
 	}
-
+		
 	void changeMainPlayer() {
 		if (mainPlayer+1 > maxPlayers){
 			mainPlayer = 1;

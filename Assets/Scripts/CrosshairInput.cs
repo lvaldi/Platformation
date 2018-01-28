@@ -20,9 +20,14 @@ public class CrosshairInput : MonoBehaviour {
 	void Update () {
 		crosshairMovement ("Horizontal_R_" + playerNumber,"Vertical_R_"+playerNumber);
 		shootingTrigger("Fire_"+playerNumber);
+		resetCrossHair ("Start_" + playerNumber);
 	}
 
-
+	void resetCrossHair(string action){
+		if (Input.GetButtonDown(action)){
+			transform.position = new Vector3 (0, 0, 0);
+		}
+	}
 
 	void shootingTrigger(string action){
 		if (Input.GetAxis (action) > 0 && !isTriggerDown) {

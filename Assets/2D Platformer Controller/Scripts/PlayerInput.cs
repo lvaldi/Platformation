@@ -34,8 +34,7 @@ public class PlayerInput : MonoBehaviour
 	void playerControls() {
 		jumpAction ("Jump_" + playerNumber);
 		directionalMovement ("Horizontal_L_" + playerNumber);
-//		crosshairMovement ("Horizontal_R_" + playerNumber,"Vertical_R_"+playerNumber);
-//		shootingTrigger("Fire_"+playerNumber);
+
 	}
 
 	void directionalMovement(string horizontal) {
@@ -54,24 +53,4 @@ public class PlayerInput : MonoBehaviour
 			player.OnJumpInputUp();
 		}
 	}
-
-//	void shootingTrigger(string action){
-//		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
-//            //TODO - Shoot button
-//            crosshair.AttemptShot();
-//            Debug.Log (Input.GetAxis (action));
-//			isTriggerDown = true;
-//		}
-//
-//		if (Input.GetAxis (action) <= 0) {
-//			isTriggerDown = false;
-//		}
-//
-//
-//	}
-//
-//	void crosshairMovement(string horizontal, string vertical) {
-//		Vector2 directionalInput = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
-//		crosshair.moveCrossHair (directionalInput);
-//	}
 }
