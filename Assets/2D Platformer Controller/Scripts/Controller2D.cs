@@ -35,9 +35,9 @@ public class Controller2D : RaycastController
         collisions.moveAmountOld = moveAmount;
         playerInput = input;
 
-        collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
-        if (Mathf.Abs(moveAmount.x) > 0)
+        if (moveAmount.x != 0)
         {
+            collisions.faceDir = (int)Mathf.Sign(moveAmount.x);
             if (animator != null && climberPuppetParent != null)
             {
                 animator.SetBool("isRunning", true);
