@@ -9,8 +9,4 @@ public abstract class Trap : Platform
     {
         GameController.instance.endRound();
     }
-
-    protected void Ice() {
-        GameController.instance.slowPlayer();
-    }
 }
