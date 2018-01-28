@@ -20,6 +20,7 @@ public abstract class Platform : MonoBehaviour, IPlatform {
     public virtual void Death()
 	{
 		// might not need
+		Destroy(gameObject);
 	}
 
     
