@@ -28,7 +28,7 @@ public class CrosshairInput : MonoBehaviour {
 		if (Input.GetAxis (action) > 0 && !isTriggerDown) {
 			//TODO - Shoot button
 			crosshair.AttemptShot();
-			Debug.Log (Input.GetAxis (action));
+			
 			isTriggerDown = true;
 		}
 

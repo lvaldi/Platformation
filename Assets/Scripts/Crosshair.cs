@@ -13,7 +13,7 @@ public class Crosshair : MonoBehaviour {
 	[SerializeField]
 	private float _shotCooldownTime = 1.0f;
 	[SerializeField]
-    private float _bulletTravelDelay = 0.8f;
+    private float _bulletTravelDelay = 3f;
     [SerializeField]
     private float _startDelay = 5.0f;
     private IEnumerator coroutine;
@@ -36,20 +36,11 @@ public class Crosshair : MonoBehaviour {
 		transform.position = new Vector3(x, y, 0);
 	}
 
-	private IEnumerator DelayShot(float waitTime) 
+	private IEnumerator DelayShot(float waitTime, Vector2 posBeforeDelay) 
 	{
 		yield return new WaitForSeconds(waitTime);
-	}
-
-	public void Shoot() 
-	{
-		Vector2 posBeforeDelay = transform.position;
-		coroutine = DelayShot(_bulletTravelDelay);
-		StartCoroutine(coroutine);
 		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
-
-
-
+		
 		if (colliderHit != null) {
 			CreatePlatform (colliderHit.gameObject);
 			
@@ -57,6 +48,15 @@ public class Crosshair : MonoBehaviour {
 		} else {
 			Debug.Log ("Missed the player");
 		}
+		
+	}
+
+	public void Shoot() 
+	{
+		Vector2 posBeforeDelay = transform.position;
+		coroutine = DelayShot(_bulletTravelDelay,posBeforeDelay);
+		StartCoroutine(coroutine);
+		
 	}
 
 	public void AttemptShot() 
@@ -72,7 +72,7 @@ public class Crosshair : MonoBehaviour {
 	}
 
 	public void DelayStart(){
-		Invoke ("setCanShootTrue", 0.1f);
+		Invoke ("setCanShootTrue", _startDelay);
 	}
 
 	void setCanShootTrue() {

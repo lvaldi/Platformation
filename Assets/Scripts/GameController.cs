@@ -20,11 +20,11 @@ public class GameController : MonoBehaviour {
 	//Max amount of players allowed in game
 	readonly int maxPlayers = 4;
 
-	//Start position
-	readonly Vector3 startPosition = new Vector3(-4.377336f,3.651274f,0f);
+    //Start position
+    private Vector3 startPosition;
 
-	//Referenced Gameobjects
-	GameObject[] crosshairGOs;
+    //Referenced Gameobjects
+    GameObject[] crosshairGOs;
     Crosshair[] crosshairs;
     GameObject player;
 
@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour {
 		mainPlayerinputControls = mainPlayerGameObject.GetComponent<PlayerInput> ();
 		crosshairGOs = GameObject.FindGameObjectsWithTag ("Crosshair");
 		player = GameObject.Find ("Player");
+        startPosition = player.transform.position;
 
         crosshairs = new Crosshair[crosshairGOs.Length];
         for (int i = 0; i < crosshairGOs.Length; ++i)
@@ -111,16 +112,17 @@ public class GameController : MonoBehaviour {
 	}
 
 	void setCrossHairActive() {
-		Debug.Log (mainPlayer + " Crosshair disabled");
+		
 		int i = -2;
 		foreach (GameObject xhair in crosshairGOs) {
 			if (xhair.name == "Crosshair_" + mainPlayer) {
 				xhair.SetActive (false);
 			} else {
 				xhair.SetActive (true);
-				xhair.GetComponent<Crosshair> ().DelayStart ();
-
-				xhair.GetComponent<Crosshair> ().onPlayerKill += endRound;
+                Crosshair script = xhair.GetComponent<Crosshair>();
+                script.DelayStart ();
+				script.DesignatePlatformIndex();
+				script.onPlayerKill += endRound;
 			}
 			xhair.transform.position = new Vector2 (i*5, 0);
 			i++;
