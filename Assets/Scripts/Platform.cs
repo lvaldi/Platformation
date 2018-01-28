@@ -10,10 +10,10 @@ public abstract class Platform : MonoBehaviour, IPlatform {
     public virtual void Init()
 	{
         _spriteRenderer = GetComponent<SpriteRenderer>();
-
-        
-
+	
         _collider = this.gameObject.AddComponent<PolygonCollider2D>();
+		gameObject.layer = LayerMask.NameToLayer ("Obstacle");
+		gameObject.tag = "Platform";
 
     }
 

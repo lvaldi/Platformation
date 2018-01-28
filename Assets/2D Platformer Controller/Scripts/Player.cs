@@ -33,8 +33,12 @@ public class Player : MonoBehaviour
     private bool wallSliding;
     private int wallDirX;
 
+	//Start position
+	private Vector3 startPosition;
+
     private void Start()
     {
+		startPosition = transform.position;
         controller = GetComponent<Controller2D>();
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -139,4 +143,8 @@ public class Player : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below ? accelerationTimeGrounded : accelerationTimeAirborne));
         velocity.y += gravity * Time.deltaTime;
     }
+
+	public void respawnPlayer() {
+		transform.position = startPosition;
+	}
 }
