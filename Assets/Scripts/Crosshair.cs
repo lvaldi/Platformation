@@ -36,6 +36,13 @@ public class Crosshair : MonoBehaviour {
 
     private int _killCount;
 
+    private float _crosshairRadius;
+
+    void Start()
+	{
+        _crosshairRadius = this.GetComponent<SpriteRenderer>().bounds.size.x / 2f;
+    }
+
     public void moveCrossHair(Vector2 input) 
 	{
 		float x = transform.position.x + input.x*speed;
@@ -46,8 +53,8 @@ public class Crosshair : MonoBehaviour {
 	private IEnumerator DelayShot(float waitTime, Vector2 posBeforeDelay) 
 	{
 		yield return new WaitForSeconds(waitTime);
-		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("Player"));
-		Collider2D safeAreaHit = Physics2D.OverlapCircle (posBeforeDelay, 1f, LayerMask.GetMask ("SafeArea"));
+		Collider2D colliderHit = Physics2D.OverlapCircle (posBeforeDelay, _crosshairRadius, LayerMask.GetMask ("Player"));
+		Collider2D safeAreaHit = Physics2D.OverlapCircle (posBeforeDelay, _crosshairRadius, LayerMask.GetMask ("SafeArea"));
 
 		if (colliderHit != null && safeAreaHit == null) {
             OnHitPlayer(colliderHit);
