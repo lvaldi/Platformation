@@ -89,7 +89,7 @@ public class Crosshair : MonoBehaviour {
 
 		splatter.transform.position = new Vector3 (posBeforeDelay.x, posBeforeDelay.y, 0);
 		splatter.GetComponent<SpriteRenderer> ().enabled = true;
-		splatter.GetComponent<SplatterAnimation>().StartFade (this.GetComponent<SpriteRenderer>().color);
+		splatter.GetComponent<SplatterAnimation>().StartFade (this.GetComponent<SpriteRenderer>().color, this);
 	}
 
 	private GameObject GetSplatter()
@@ -98,6 +98,12 @@ public class Crosshair : MonoBehaviour {
 		splatterList.RemoveAt (0);
 		return obj;
 	}
+
+	public void ReturnToPool(GameObject obj)
+	{
+        splatterList.Add(obj);
+
+    }
 
 	private void OnHitPlayer(Collider2D colliderHit)
 	{

@@ -7,8 +7,9 @@ public class SplatterAnimation : MonoBehaviour {
 	private bool _readyToFade;
 	private float _startTime;
 	private float _fadeDuration = 2f;
+    private Crosshair _crosshair;
 
-	private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer;
 
 	void Start()
 	{
@@ -19,12 +20,13 @@ public class SplatterAnimation : MonoBehaviour {
 		FadeSplatter ();
 	}
 
-	public void StartFade(Color crosshairColor)
+	public void StartFade(Color crosshairColor, Crosshair crosshair)
 	{
 		_readyToFade = true;
 		_startTime = Time.time;
 		_spriteRenderer.color = crosshairColor;
-	}
+        _crosshair = crosshair;
+    }
 
 	private void FadeSplatter()
 	{
@@ -47,8 +49,11 @@ public class SplatterAnimation : MonoBehaviour {
 			_spriteRenderer.color = new Color(_spriteRenderer.color.r, 
 				_spriteRenderer.color.g,
 				_spriteRenderer.color.b,
-				0);
+				255f);
 			_readyToFade = false;
-		}
+
+            _spriteRenderer.enabled = false;
+            _crosshair.ReturnToPool(this.gameObject);
+        }
 	}
 }
