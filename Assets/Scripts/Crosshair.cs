@@ -39,6 +39,10 @@ public class Crosshair : MonoBehaviour {
     [SerializeField]
     private GameObject _bombPrefab;
 
+	[SerializeField]
+	GameObject splatterPrefab;
+
+	private List<GameObject> splatterList;
 
     private int _killCount;
 
@@ -47,6 +51,16 @@ public class Crosshair : MonoBehaviour {
     void Start()
 	{
         _crosshairRadius = this.GetComponent<SpriteRenderer>().bounds.size.x / 2f;
+
+		splatterList = new List<GameObject> ();
+
+		for (int i = 0; i < 10f; ++i) {
+			GameObject obj = Instantiate (splatterPrefab);
+			obj.GetComponent<SpriteRenderer> ().enabled = false;
+
+			splatterList.Add(obj);
+
+		}
     }
 
     public void moveCrossHair(Vector2 input) 
@@ -71,6 +85,18 @@ public class Crosshair : MonoBehaviour {
 		}
 
 		AudioController.instance.PLAY (AUDIO.WALL_IMPACT);
+		GameObject splatter = GetSplatter ();
+
+		splatter.transform.position = new Vector3 (posBeforeDelay.x, posBeforeDelay.y, 0);
+		splatter.GetComponent<SpriteRenderer> ().enabled = true;
+		splatter.GetComponent<SplatterAnimation>().StartFade (this.GetComponent<SpriteRenderer>().color);
+	}
+
+	private GameObject GetSplatter()
+	{
+		GameObject obj = splatterList [0];
+		splatterList.RemoveAt (0);
+		return obj;
 	}
 
 	private void OnHitPlayer(Collider2D colliderHit)

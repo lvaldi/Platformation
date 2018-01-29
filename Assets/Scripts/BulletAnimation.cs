@@ -25,6 +25,7 @@ public class BulletAnimation : MonoBehaviour {
 	float timeTaken = 3.0f;
 	float startTime;
 
+
 	// Use this for initialization
 	void Start () {
 		startPoint = transform.position;
@@ -67,6 +68,8 @@ public class BulletAnimation : MonoBehaviour {
 	void vanish() {
 		if (withinDistance(targetPoint)) {
 			transform.localScale = Vector3.zero;
+			//TODO - make splatter appear
+
 		}
 	}
 
