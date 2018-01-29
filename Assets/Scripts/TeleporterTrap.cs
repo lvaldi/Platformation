@@ -11,6 +11,8 @@ public class TeleporterTrap : Trap {
 			Vector3 position = other.gameObject.transform.position;
 			Vector3 newPosition = position + (Vector3.up * 5);
 			other.gameObject.transform.position = newPosition;
-		}
+
+            // KillPlayer();
+        }
 	}
 }
