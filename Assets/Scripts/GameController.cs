@@ -170,7 +170,6 @@ public class GameController : MonoBehaviour {
 			} else {
 				xhair.SetActive (true);
                 Crosshair script = xhair.GetComponent<Crosshair>();
-                script.DelayStart ();
 				script.onPlayerKill += endRound;
 			}
 			xhair.transform.position = new Vector2 (i*5, 0);

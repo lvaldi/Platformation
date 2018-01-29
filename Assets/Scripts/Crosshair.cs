@@ -93,25 +93,12 @@ public class Crosshair : MonoBehaviour {
 
 	public void AttemptShot() 
 	{
-		if(!canShoot)
-            return;
-
-
-		print (_previousShotTime);
 		if(Time.time - _previousShotTime >= _shotCooldownTime) 
 		{
 			Shoot();
 			AudioController.instance.PLAY (AUDIO.SHOT);
 			_previousShotTime = Time.time;
 		}
-	}
-
-	public void DelayStart(){
-		Invoke ("setCanShootTrue", _startDelay);
-	}
-
-	void setCanShootTrue() {
-		canShoot = true;
 	}
 
 	public void CreatePlatform(GameObject player) 
