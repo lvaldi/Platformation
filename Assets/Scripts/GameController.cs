@@ -90,6 +90,7 @@ public class GameController : MonoBehaviour {
 
 
 	public void endRound() {
+		Debug.Log ("End Round");
 		changeMainPlayer ();
 		setupRound ();
 		resetTimer ();
@@ -165,11 +166,12 @@ public class GameController : MonoBehaviour {
 		
 		int i = -2;
 		foreach (GameObject xhair in _crosshairGOs) {
+			Crosshair script = xhair.GetComponent<Crosshair>();
+			script.onPlayerKill -= endRound;
 			if (xhair.name == "Crosshair_" + mainPlayer) {
 				xhair.SetActive (false);
 			} else {
 				xhair.SetActive (true);
-                Crosshair script = xhair.GetComponent<Crosshair>();
 				script.onPlayerKill += endRound;
 			}
 			xhair.transform.position = new Vector2 (i*5, 0);
